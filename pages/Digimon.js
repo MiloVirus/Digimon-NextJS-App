@@ -1,4 +1,4 @@
-import { Box, Flex, SimpleGrid, Text, Button, Checkbox, CheckboxGroup } from "@chakra-ui/react";
+import { Box, Flex, SimpleGrid, Text, Button, Checkbox} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import DigimonGraph from "./components/DigimonGraph";
@@ -18,32 +18,30 @@ const Digimon = () => {
                                         {level: "Mega", status: false},
                                         {level: "Ultimate", status: false},
                                         {level: "Fresh", status: false},
-                                        {level: "In training", status: false},
+                                        {level: "In Training", status: false},
                                         {level: "Training", status: false},
                                         {level: "Armor", status: false}])
-  let combinedArraycurrent = []
- 
-
-  
-  
 
   let arrayDigi = [];
 
   useEffect(() => {
+
     const callApi = async () => {
       const response = await axios.get(
         "https://digimon-api.vercel.app/api/digimon"
       );
-      setDigi([...response.data]);
-
-      for (let i = 0; i < response.data.length; i++) {
-        arrayDigi[i] = response.data.splice(0, 27);
+      console.log(response.data)
+      setDigi(response.data);
+      const responsePages = [...response.data]
+      
+      for (let i = 0; i < responsePages.length; i++) {
+        arrayDigi[i] = responsePages.splice(0, 27);
       }
-      setCurrentList([...arrayDigi]);
-      setPermaCurrentList([...arrayDigi]);
-      setDigiLists([...arrayDigi[0]]);
-      setPermaDigiLists([...arrayDigi[0]])
-      setCombinedLevel([...arrayDigi[0]])
+      setCurrentList(arrayDigi);
+      setPermaCurrentList(arrayDigi);
+      setDigiLists(arrayDigi[0]);
+      setPermaDigiLists(arrayDigi[0])
+      setCombinedLevel(arrayDigi[0])
       
     };
 
@@ -71,6 +69,7 @@ const Digimon = () => {
 
   const callSwitch = (level) => 
   { 
+    console.log(digiFilter)
     let thisArray = []
     let filterPlease = []
     let filterLevelPages = []
@@ -78,21 +77,20 @@ const Digimon = () => {
 
     checks.forEach(element => 
       {
-        if(element.status == true)
+        if(element.status == true && element.level == level)
         {
           
+          const filteredByLevel = digi.filter(digimon => digimon.level == level)
           
-          const filteredByLevel = digi.filter(digimon =>  digimon.level == level)
 
           filterPlease = [...digiFilter, ...filteredByLevel]
+          setDigiFilter([...digiFilter, ...filteredByLevel])
+          //thisArray = [...filterPlease]
+          //console.log(filterPlease)
 
-          setDigiFilter(filterPlease)
-          thisArray = [...filterPlease]
-          console.log(filterPlease)
+          for (let i = 0; i < filterPlease.length; i++) {
 
-          for (let i = 0; i < thisArray.length; i++) {
-
-            filterLevelPages[i] = thisArray.splice(0, 10);
+            filterLevelPages[i] = filterPlease.splice(0, 10);
 
           }
             
@@ -100,29 +98,29 @@ const Digimon = () => {
           setCurrentList(filterLevelPages)
           //setDigiFilter([...filteredByLevel])
           console.log("checkbox is checked")
-          console.log(filterPlease)
+          //console.log(filterPlease)
+          console.log(filteredByLevel)
         }
         else if(element.status == false && element.level == level)
         {
-          let theFilterRemove = [...digiFilter]
-          console.log(theFilterRemove)
-
-          let filterRemove = theFilterRemove.filter(digimon => digimon.level != level)
-          
+          console.log(digiFilter)
+          const filterRemove = digiFilter.filter(digimon => digimon.level != level)
+          const filterRemovePages = [...filterRemove]
           console.log(filterRemove)
           console.log("here first")
 
-          if (filterRemove.length < 1)
+          if (filterRemovePages.length < 1)
           {
             setDigiLists(permaDigiLists)
             setCurrentList(permaCurrentList)
+            setDigiFilter(filterRemove)
             console.log("here second")
           }
           else
           {
-            for (let i = 0; i < filterRemove.length; i++) {
+            for (let i = 0; i < filterRemovePages.length; i++) {
 
-              filterLevelPages2[i] = filterRemove.splice(0, 10);
+              filterLevelPages2[i] = filterRemovePages.splice(0, 10);
   
             }
             setDigiLists(filterLevelPages2[0])
@@ -131,12 +129,10 @@ const Digimon = () => {
             console.log("here")
           }
         }
-        
       })
       
   }
   
- 
   const switchChange = (level) =>
   {
     checks.forEach(element => 
