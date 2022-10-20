@@ -8,17 +8,16 @@ import { Box, Flex } from '@chakra-ui/react'
 
 export default function Home() {
   return (
-    <div>
+    <Box overflow="hidden" h="100vh">
       <NavBar/>
-      <Flex direction={['column','column','row']}>
+      <Flex direction={['column','column','row']} height="100%">
         <Box w={['100%','100%','20%']}>
           <SideBar/>
         </Box>
-        <Box w="100vw" h="100vw">
-          <Digimon/>
+        <Box w="100%" h="100%">
+          <Digimon className="digimon" />
         </Box>
       </Flex>
-      
-    </div>
+    </Box>
   )
 }

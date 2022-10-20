@@ -3,7 +3,7 @@ import { Box, Button, Flex } from '@chakra-ui/react'
 
 const NavBar = () => {
   return (
-    <Flex bg="black">
+    <Flex bg="black" fontFamily="Spline">
       <Button 
       as='a'
       color="white"

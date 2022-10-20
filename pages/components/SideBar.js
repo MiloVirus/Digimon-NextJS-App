@@ -3,7 +3,7 @@ import { Box, Button, Flex } from '@chakra-ui/react'
 
 const SideBar = () => {
   return (
-    <Box w="100%" h="100vw" bg="black">
+    <Box w="100%" h={[170,170,"100%"]} bg="black" fontFamily="Spline">
         <Button 
         as='a'
         color="white"

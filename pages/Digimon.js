@@ -2,6 +2,13 @@ import { Box, Flex, SimpleGrid, Text, Button, Checkbox} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import DigimonGraph from "./components/DigimonGraph";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+} from '@chakra-ui/react'
 
 const Digimon = () => {
   const [digi, setDigi] = useState([])
@@ -81,7 +88,7 @@ const Digimon = () => {
         {
           
           const filteredByLevel = digi.filter(digimon => digimon.level == level)
-          
+          console.log(filteredByLevel)
 
           filterPlease = [...digiFilter, ...filteredByLevel]
           setDigiFilter([...digiFilter, ...filteredByLevel])
@@ -99,7 +106,7 @@ const Digimon = () => {
           //setDigiFilter([...filteredByLevel])
           console.log("checkbox is checked")
           //console.log(filterPlease)
-          console.log(filteredByLevel)
+          
         }
         else if(element.status == false && element.level == level)
         {
@@ -129,8 +136,7 @@ const Digimon = () => {
             console.log("here")
           }
         }
-      })
-      
+      })   
   }
   
   const switchChange = (level) =>
@@ -148,79 +154,97 @@ const Digimon = () => {
 
   return (
     <>
-    <Checkbox onChange={()=>switchChange("Rookie")}>Rookie</Checkbox>
-    <Checkbox onChange={()=>switchChange("In Training")}>In Training</Checkbox>
-    <Checkbox onChange={()=>switchChange("Champion")}>Champion</Checkbox>
-    <Checkbox onChange={()=>switchChange("Ultimate")}>Ultimate</Checkbox>
-    <Checkbox onChange={()=>switchChange("Mega")}>Mega</Checkbox>
-    <Checkbox onChange={()=>switchChange("Armor")}>Armor</Checkbox>
-    <Checkbox onChange={()=>switchChange("Training")}>Training</Checkbox>
-    <Checkbox onChange={()=>switchChange("Fresh")}>Fresh</Checkbox>
-      <SimpleGrid
-        bg="gray.50"
-        columns={{ sm: 2, md: 2, lg: 4 }}
-        spacing="5"
-        p="10"
-        textAlign="center"
-        rounded="lg"
-        color="gray.400"
-      >
-        {digiLists.map((element, index) => (
-          <Box
-            w="100%"
-            key={index}
-            boxShadow="xs"
-            p="6"
-            rounded="md"
-            bg="white"
-            onClick={() => callDigimon(element)}
-          >
-            <Flex>
-              <Box w="100%">
+      <Accordion allowToggle={true} >
+      <AccordionItem>
+        <h2>
+          <AccordionButton>
+            <Box flex='1' textAlign={['center','center','center', 'left']} fontWeight="bold" color="#444445" fontFamily="Spline">
+              Filter Digimons by Level
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+        </h2>
+        <AccordionPanel pb={4} fontWeight="medium" color="#7d7d7d" alignItems="center"  textAlign="center" fontFamily="Spline">
+          <Checkbox p={2} onChange={()=>switchChange("Rookie")}>Rookie</Checkbox>
+          <Checkbox p={2} onChange={()=>switchChange("In Training")}>In Training</Checkbox>
+          <Checkbox p={2} onChange={()=>switchChange("Champion")}>Champion</Checkbox>
+          <Checkbox p={2} onChange={()=>switchChange("Ultimate")}>Ultimate</Checkbox>
+          <Checkbox p={2} onChange={()=>switchChange("Mega")}>Mega</Checkbox>
+          <Checkbox p={2} onChange={()=>switchChange("Armor")}>Armor</Checkbox>
+          <Checkbox p={2} onChange={()=>switchChange("Training")}>Training</Checkbox>
+          <Checkbox p={2} onChange={()=>switchChange("Fresh")}>Fresh</Checkbox>
+        </AccordionPanel>
+      </AccordionItem>
+    </Accordion>
+      <Box overflowY="auto" h={['70%','70%','90%']}>
+        <SimpleGrid
+          bg="gray.50"
+          columns={{ sm: 2, md: 2, lg: 4 }}
+          spacing="5"
+          p="10"
+          textAlign="center"
+          rounded="lg"
+          color="gray.400"
+          fontFamily="Spline"
+          fontWeight="medium"
+        >
+          {digiLists.map((element, index) => (
+            <Box
+              w="100%"
+              key={index}
+              boxShadow="xs"
+              p="6"
+              rounded="md"
+              bg="white"
+              onClick={() => callDigimon(element)}
+            >
+              <Flex>
+                <Box w="100%">
+                  <Box className="digiName">
+                    <Text fontSize="1.3em" color="#505050">
+                      {element.name}
+                    </Text>
+                  </Box>
+                  <Box className="digiLevel">
+                    <Text>{element.level}</Text>
+                  </Box>
+                </Box>
+                <Box flexShrink="0.3" className="digiLevel">
+                  <img width="100px" src={element.img}></img>
+                </Box>
+              </Flex>
+            </Box>
+          ))}
+        </SimpleGrid>
+        <Box>
+          {currentList.map((element, index) => (
+            <Button key={index} onClick={() => callArray(index)}>
+              {index + 1}
+            </Button>
+          ))}
+        </Box>
+          <Box w="100%" rounded="md"  bg="white" p="10" border="0px">
+          <Flex>
+            <Box w="100%" margin="auto" textAlign="center" alignSelf="center">
+              <Box w="100%" m="auto">
                 <Box className="digiName">
                   <Text fontSize="1.3em" color="#505050">
-                    {element.name}
+                    {singleDigimon.name}
                   </Text>
                 </Box>
                 <Box className="digiLevel">
-                  <Text>{element.level}</Text>
+                  <Text>{singleDigimon.level}</Text>
                 </Box>
               </Box>
-              <Box flexShrink="0.3" className="digiLevel">
-                <img width="100px" src={element.img}></img>
-              </Box>
-            </Flex>
-          </Box>
-        ))}
-      </SimpleGrid>
-      <Box>
-        {currentList.map((element, index) => (
-          <Button key={index} onClick={() => callArray(index)}>
-            {index + 1}
-          </Button>
-        ))}
-      </Box>
-        <Box w="100%" rounded="md"  bg="white" p="10" border="0px">
-        <Flex>
-          <Box w="100%" margin="auto" textAlign="center" alignSelf="center">
-            <Box w="100%" m="auto">
-              <Box className="digiName">
-                <Text fontSize="1.3em" color="#505050">
-                  {singleDigimon.name}
-                </Text>
-              </Box>
-              <Box className="digiLevel">
-                <Text>{singleDigimon.level}</Text>
+              <Box textAlign="center" flexShrink="0.3" className="digiLevel" justifyContent="center">
+                <img width="300px" src={singleDigimon.img}></img>
               </Box>
             </Box>
-            <Box textAlign="center" flexShrink="0.3" className="digiLevel" justifyContent="center">
-              <img width="300px" src={singleDigimon.img}></img>
+            <Box w="100%" alignSelf="center" justifyContent="center">
+              {digiGraph}
             </Box>
-          </Box>
-          <Box w="100%" alignSelf="center" justifyContent="center">
-            {digiGraph}
-          </Box>
-        </Flex>
+          </Flex>
+        </Box>
       </Box>
     </>
   );

@@ -2,16 +2,6 @@ import React from 'react'
 
 const DigimonList = () => {
 
-
-
-
-
-
-
-
-
-
-
   return (
     <>
     <Checkbox defaultChecked onChange={filterLevel}>Rookie</Checkbox>
@@ -69,7 +59,7 @@ const DigimonList = () => {
                 </Text>
               </Box>
               <Box className="digiLevel">
-                <Text>{singleDigimon.level}</Text>
+                <Text fontFamily="Spline">{singleDigimon.level}</Text>
               </Box>
             </Box>
             <Box textAlign="center" flexShrink="0.3" className="digiLevel" justifyContent="center">
